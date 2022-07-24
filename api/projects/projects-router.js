@@ -85,38 +85,14 @@ router.post('/', validProjectsBody, async(req, res, next)=>{
 
 // [PUT] /api/projects/:id
 router.put('/:id', validateProjectId, validProjectsBody, async (req, res, next)=>{
-    // http put :9000/api/projects/2  name=bb description=bbb completed=false  -v
-    // res.json('TEST: update by endpoint') 
-   
-    // Project.update(req.params.id, req.body)
-    // .then(project=>{
-    //     if(!project){
-    //         res.status(404).json({ message: "The project with the specified ID does not exist" })
-    //     }else{
-    //         res.status(201).json(project)
-    //     }  
-    // }).catch(next)
 
-    // const {id} = req.params
-    // const {name, description, completed} = req.body
     try{
        
-        // const beforePorject = await Project.get(req.params.id)
-        // if(!beforePorject){
-        //     res.status(404).json({ message: "The post with the specified ID does not exist" }) 
-        // }
-        // // if(!name || !description || !completed){
-        // if(!name || !description){
-        //     res.status(400).json({ message: "Please provide name or description for the projects" })
-        // }else{
-        //     const project =  await Project.update(id, {name, description, completed})
-        //     res.status(201).json(project)
-        // }  
         const project =  await Project.update(req.params.id, req.body)
-        res.status(201).json(project)
+        res.status(400).json(project)
     }catch(err){
         next(err)
-        // res.status(500).send('ERROR')
+        
     }
 
 
