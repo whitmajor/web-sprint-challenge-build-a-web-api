@@ -1,6 +1,7 @@
 // Write your "actions" router here!
 const express = require('express');
 const Action = require('./actions-model.js')
+const { validateActionId, validateActionBody } = require('./actions-middlware')
 
 const router = express.Router()
 
@@ -60,20 +61,13 @@ router.post('/', async(req, res, next)=>{
         // res.status(500).send('ERROR')
     }
 });
-// [PUT] /api/actions/:id
-router.put('/:id', async (req, res, next)=>{
-    // http put :9000/api/actions/2  project_id=2 description=fff notes=ffffff  completed=false   -v
-    // res.json('TEST: update by endpoint') 
-
+router.put('/:id', validateActionId, validateActionBody, (req, res, next) => {
     Action.update(req.params.id, req.body)
-        .then(action=>{
-            if(!action){
-                res.status(404).json({ message: "The action with the specified ID does not exist" })
-            }else{
-                res.status(201).json(action)
-            }
-        }).catch(next)
-});
+        .then(actions => {
+            res.json(actions)
+        })
+        .catch(next)
+})
 // [DELETE] /api/actions/:id
 router.delete('/:id', async (req, res, next)=>{
     // http delete :9000/api/actions/7  -v
